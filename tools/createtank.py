@@ -1,19 +1,7 @@
 
 from PIL import Image
 
-def is_pixel_black(pixel):
-    ''' Checks if pixel rbg is 0, 0, 0 (black) '''
-    # Check red value
-    if pixel[0] is not 0:
-        return False
-    # Check blue value
-    if pixel[1] is not 0:
-        return False
-    # Check green value
-    if pixel[2] is not 0:
-        return False
-
-    return True
+from helper import is_pixel_black
 
 
 def get_pixels_from_image(img_path):
@@ -62,7 +50,7 @@ def translate_pixels(pixels):
     return pixels
 
 def get_tank_info(img_path):
-    info = {"width": 0, "height": 0, "pixels": []}
+    info = {"width": 0, "height": 0, "pixels": [], "bottomlength": 0, "bottompixel": []}
     two_d_p = get_pixels_from_image(img_path)
 
     low_y = 50
@@ -85,12 +73,22 @@ def get_tank_info(img_path):
         two_d_p[index][0] -= low_x
         two_d_p[index][1] -= low_y
 
+
     info["width"] = high_x - low_x
     info["height"] = high_y - low_y
     info["pixels"] = two_d_p
 
+    for index in range(len(two_d_p)):
+        if two_d_p[index][1] == info["height"]:
+            info['bottomlength'] += 1
+            info['bottompixel'].append(two_d_p[index])
+
+
     return info
 
+tank_data = get_tank_info("tankimg/tank.png")
 
-print("Tank pixel size: " + str(len(get_pixels_from_image("tankimg/tank.png"))))
-print(str(get_tank_info("tankimg/tank.png")))
+tank_data['pixels'].sort(key=lambda x: x[0])
+
+# print("Tank pixel size: " + str(len(get_pixels_from_image("tankimg/tank.png"))))
+print(str(tank_data))
