@@ -6,17 +6,29 @@ const tankData = {'height': 31, 'bottomlength': 39, 'pixels': [[12, 0], [13, 0],
 
 class Tank {
 
+
     constructor() {
         this.height = tankData['height'];
         this.width = tankData['width'];
-        this.pixels = tankData['pixels'];
+        this.pixels = [];
         this.bottompixel = tankData['bottompixel'];
         this.bottomlength = tankData['bottomlength'];
         this.xoffset = 0;
         this.yoffset = 0;
+        this.angle = 0;
+        this.bullet = new Bullet();
     }
 
-    setAngle() {
+    /**
+     * _setAngle
+     *
+     * Set angle defines the height difference between
+     * the tanks start position and the end position
+     *
+     * @private
+     * @return {Undefined}
+     */
+    _setAngle() {
         let start = gameMap.getYPixel(this.xoffset);
         let end = gameMap.getYPixel(this.xoffset + this.width);
         let heightDif = start - end;
@@ -24,20 +36,59 @@ class Tank {
         this.angle = -(heightDif / this.width);
     }
 
-    setYOffset(x) {
+    /**
+     * _setYOffset
+     *
+     * Sets this.yoffset to match the map height in the this.xoffset
+     *
+     * @private
+     * @return {Undefined}
+     */
+    _setYOffset() {
         this.yoffset = gameMap.getYPixel(this.xoffset) - this.height;
     }
 
+    /**
+     * _mapTankPixels
+     *
+     * Maps the tank pixels that defines the tank shape to match the pixels
+     * in the game map
+     *
+     * @private
+     * @return {Undefined}
+     */
+    _mapTankPixels() {
+        this._setAngle();
+        this._setYOffset();
+
+        const tankShape = tankData['pixels'];
+        let angleOffset = 0;
+
+        for (let i in tankShape) {
+            angleOffset = this.angle * tankShape[i][0];
+            let x_pos = tankShape[i][0] + this.xoffset;
+            let y_pos = tankShape[i][1] + this.yoffset + angleOffset;
+
+            this.pixels[i] = [x_pos, y_pos];
+        }
+    }
+
     draw() {
-        this.setAngle();
-        this.setYOffset();
-        let adder = 0;
+        this._mapTankPixels();
 
         for(let pix of this.pixels){
-            adder = this.angle * pix[0];
-
-            point(pix[0] + this.xoffset, pix[1] + this.yoffset + adder);
+            point(pix[0], pix[1]);
         }
+
+        if (this.bullet.isAlive) {
+            this.bullet.draw();
+        }
+
+    }
+
+    shoot() {
+        this.bullet.setPos(this.xoffset + 25, this.yoffset + 5);
+        this.bullet.shoot(BULLET_DIR_RIGHT, this.angle);
     }
 
     setoffset(x, y){

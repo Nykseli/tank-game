@@ -26,6 +26,8 @@ function draw() {
         tank1.moveLeft();
     } else if (keyIsDown(RIGHT_ARROW)) {
         tank1.moveRight();
+    } else if (keyIsDown(ENTER)) {
+        tank1.shoot();
     }
 
     tank1.draw();
