@@ -3,16 +3,30 @@ const GAME_HEIGHT = 720;
 
 let gameMap;
 let tank1;
+let tank2;
 
+let tank1Json;
+let tank2Json;
+
+function preload() {
+    // Load the tank data from json files
+    // Json files contains the tank shape etc
+    tank1Json = loadJSON("tankdata/tank1.json");
+    tank2Json = loadJSON("tankdata/tank2.json");
+}
 
 function setup() {
     createCanvas(GAME_WIDTH, GAME_HEIGHT);
     frameRate(20);
 
     gameMap = new GameMap();
+    tank1 = new Tank(tank1Json);
+    tank1.setoffset(400, GAME_HEIGHT / 2 - tank1.height);
+    tank2 = new Tank(tank2Json)
+    tank2.setoffset(800, GAME_HEIGHT / 2 - tank2.height);
 
-    tank1 = new Tank();
-    tank1.setoffset(800, GAME_HEIGHT / 2 - tank1.height);
+
+    //tank1 = new Tank();
     // gameMap.draw();
     // tank1.draw();
 }
@@ -22,13 +36,24 @@ function draw() {
     //drawGameLevel();
     gameMap.draw();
 
+
+
     if (keyIsDown(LEFT_ARROW)) {
-        tank1.moveLeft();
+        tank2.moveLeft();
     } else if (keyIsDown(RIGHT_ARROW)) {
+        tank2.moveRight();
+    }
+
+    // KeyCode 97 is 'a'
+    if (keyCode === 97) {
+        tank1.moveLeft();
+        // KeyCode 100 is 'd'
+    } else if (keyCode === 100) {
         tank1.moveRight();
     } else if (keyIsDown(ENTER)) {
         tank1.shoot();
     }
 
     tank1.draw();
+    tank2.draw();
 }

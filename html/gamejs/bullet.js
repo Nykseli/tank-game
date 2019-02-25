@@ -12,11 +12,13 @@ class Bullet {
         this.isAlive = false;
         this.dir;
         this.angle;
+        this.target
     }
 
-    shoot(dir, angle) {
+    shoot(dir, angle, target) {
         this.angle = angle;
         this.dir = dir;
+        this.target = target;
         this.isAlive = true;
     }
 
@@ -56,11 +58,23 @@ class Bullet {
         }
     }
 
+    hitTarget() {
+        for (let mapP of this.target.pixels) {
+            if (this.xPos === mapP[0] && Math.floor(this.yPos) === mapP[1]){
+                this.target.takeDamage();
+                this.isAlive = false;
+                break;
+            }
+        }
+    }
+
     draw() {
         for (let i = 0; i< 10; i++) {
+            if (!this.isAlive) continue;
             square(this.xPos, this.yPos, this.size);
             this.move();
-            this.hitGround()
+            this.hitGround();
+            this.hitTarget();
         }
     }
 

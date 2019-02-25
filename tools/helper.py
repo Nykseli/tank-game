@@ -1,3 +1,5 @@
+import json
+
 def is_pixel_black(pixel):
     ''' Checks if pixel rbg is 0, 0, 0 (black) '''
     # Check red value
@@ -11,3 +13,7 @@ def is_pixel_black(pixel):
         return False
 
     return True
+
+
+def print_json(json_dict):
+    print(json.dumps(json_dict))

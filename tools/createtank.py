@@ -1,7 +1,7 @@
 
 from PIL import Image
 
-from helper import is_pixel_black
+from helper import is_pixel_black, print_json
 
 
 def get_pixels_from_image(img_path):
@@ -86,9 +86,10 @@ def get_tank_info(img_path):
 
     return info
 
-tank_data = get_tank_info("tankimg/tank.png")
+tank_data = get_tank_info("tankimg/tank2.png")
 
 tank_data['pixels'].sort(key=lambda x: x[0])
 
 # print("Tank pixel size: " + str(len(get_pixels_from_image("tankimg/tank.png"))))
-print(str(tank_data))
+#print(str(tank_data))
+print_json(tank_data)
