@@ -14,6 +14,13 @@ def is_pixel_black(pixel):
 
     return True
 
+def create_data_file(filename, data):
+    ''' creates file to html/tankdata '''
+    if type(data) == dict or type(data) == list:
+        data = json.dumps(data)
+
+    with open("html/tankdata/" + filename, "w") as datafile:
+        datafile.write(data)
 
 def print_json(json_dict):
     print(json.dumps(json_dict))

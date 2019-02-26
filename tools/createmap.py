@@ -1,7 +1,11 @@
+import os
+import sys
+
+import helper
+
 from PIL import Image
 
 
-from helper import is_pixel_black
 
 
 def get_pixels_from_image(img_path):
@@ -11,7 +15,7 @@ def get_pixels_from_image(img_path):
     [[x, y], [x, y]] etc
     '''
     img_obj = Image.open(img_path)
-    img_w, img_h = img_obj.size
+    img_w, _ = img_obj.size
 
     # # Image must be 50 pixels times 50 pixels
     # if img_w is not 50 or img_h is not 50:
@@ -24,7 +28,7 @@ def get_pixels_from_image(img_path):
     two_d_list = []
     for index in range(len(one_d_list)):
         # Ignore all the pixels that are not black
-        if not is_pixel_black(one_d_list[index]):
+        if not helper.is_pixel_black(one_d_list[index]):
             continue
         # y_pos is calculated by divideing the index by image width
         # for example if index is 216, the y position is 4
@@ -37,10 +41,26 @@ def get_pixels_from_image(img_path):
 
     return two_d_list
 
-pixel_list = get_pixels_from_image("tankimg/level_main.png")
+def print_usage():
+    print("usage: pyton tools/createmap.py 'level|background'")
+    sys.exit(1)
 
-pixel_list.sort(key=lambda x: x[0])
+def sortmap(mapdata):
+    mapdata.sort(key=lambda x: x[0])
 
 
-print(str(len(pixel_list)))
-print(str(pixel_list))
+if __name__ == '__main__':
+
+    if len(sys.argv) == 2 :
+        if sys.argv[1] == "level":
+            pixel_list = get_pixels_from_image("tankimg/level_main.png")
+            sortmap(pixel_list)
+            helper.create_data_file("level_main.json", pixel_list)
+        elif sys.argv[1] == "background":
+            pixel_list = get_pixels_from_image("tankimg/level_background.png")
+            sortmap(pixel_list)
+            helper.create_data_file("level_background.json", pixel_list)
+        else:
+            print_usage()
+    else:
+        print_usage()
