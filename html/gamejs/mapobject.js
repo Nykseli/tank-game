@@ -10,13 +10,13 @@ class GameMap {
 
     drawBackground() {
         for(let pix in this.background){
-            point(this.background[pix][0], this.background[pix][1]);
+            vertex(this.background[pix][0], this.background[pix][1]);
         }
     }
 
     drawLevel() {
         for(let pix of this.level){
-            point(pix[0], pix[1]);
+            vertex(pix[0], pix[1]);
         }
     }
 
@@ -24,8 +24,10 @@ class GameMap {
         background(0);
         stroke(255);
 
+        beginShape(POINTS);
         this.drawBackground();
         this.drawLevel();
+        endShape();
 
     }
 

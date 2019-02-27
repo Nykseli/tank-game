@@ -79,11 +79,15 @@ class Tank {
     draw() {
         if (!this.isAlive()) return;
 
+        // Set the tank pixel to match the level layout
         this._mapTankPixels();
 
+        // Actually draw the tank
+        beginShape(POINTS);
         for(let pix of this.pixels){
-            point(pix[0], pix[1]);
+            vertex(pix[0], pix[1]);
         }
+        endShape();
 
         if (this.bullet.isAlive) {
             this.bullet.draw();
