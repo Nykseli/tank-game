@@ -47,8 +47,8 @@ class GameMap {
         stroke(255);
 
         beginShape(POINTS);
-        this.drawBackground();
-        this.drawLevel();
+        this._drawBackground();
+        this._drawLevel();
         endShape();
 
     }
