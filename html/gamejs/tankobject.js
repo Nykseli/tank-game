@@ -19,6 +19,7 @@ class Tank {
         this.xoffset = 0;
         this.yoffset = 0;
         this.angle = 0;
+        // Tank has only one bullet
         this.bullet = new Bullet();
     }
 
@@ -76,7 +77,16 @@ class Tank {
         }
     }
 
+    /**
+     * Main draw function.
+     * Draws the tank if it's alive
+     *
+     * @method draw
+     * @public
+     * @return {Undefined}
+     */
     draw() {
+        // We don't want to draw dead tanks
         if (!this.isAlive()) return;
 
         // Set the tank pixel to match the level layout
@@ -89,31 +99,71 @@ class Tank {
         }
         endShape();
 
+        // Draw the bullet
         if (this.bullet.isAlive) {
             this.bullet.draw();
         }
 
     }
 
+    /**
+     * Check if the tank is alive. (Does it any health left?)
+     *
+     * @method isAlive
+     * @public
+     * @return {Boolean}
+     */
     isAlive() {
         return this.health > 0;
     }
 
+    /**
+     * Deal damage to tank. Default is 20 damage
+     *
+     * @method takeDamage
+     * @public
+     * @return {Undefined}
+     */
     takeDamage() {
         this.health -= 20;
         console.log("Tank health is now: " + this.health);
     }
 
+    /**
+     * Shoot the bullet
+     *
+     * @method shoot
+     * @public
+     * @return {Undefined}
+     */
     shoot() {
         this.bullet.setPos(this.xoffset + 25, this.yoffset + 5);
         this.bullet.shoot(BULLET_DIR_RIGHT, this.angle, tank2);
     }
 
+    /**
+     * Set the X and Y offsets where the tank should be drawn.
+     * Note that in draw function, the Y offset is calulated.
+     * according to the tanks position in the map, so the y value
+     * doesn't really matter
+     *
+     * @method setoffset
+     * @public
+     * @param {Number} x The x offset
+     * @param {Number} y The y offset
+     * @return {Undefined}
+     */
     setoffset(x, y){
         this.xoffset = x;
         this.yoffset = y;
     }
 
+    /**
+     * Move the tank to left on the map
+     * @method moveLeft
+     * @public
+     * @return {Undefined}
+     */
     moveLeft() {
         this.xoffset -= 5;
         if (this.xoffset < 0){
@@ -121,6 +171,12 @@ class Tank {
         }
     }
 
+    /**
+     * Move the tank to right on the map
+     * @method moveRight
+     * @public
+     * @return {Undefined}
+     */
     moveRight() {
         this.xoffset += 5;
         if (this.xoffset > GAME_WIDTH - this.width - 1){
