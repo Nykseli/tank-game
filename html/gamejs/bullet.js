@@ -50,7 +50,7 @@ class Bullet {
     }
 
     hitGround() {
-        for (let mapP of mapData){
+        for (let mapP of levelJson['pixels']){
             if (this.xPos === mapP[0] && Math.floor(this.yPos) === mapP[1]){
                 this.isAlive = false;
                 break;
