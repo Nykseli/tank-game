@@ -21,6 +21,8 @@ class Tank {
         this.angle = 0;
         // Tank has only one bullet
         this.bullet = new Bullet();
+        // Tank has a target that is wants to hit
+        this.target;
     }
 
     /**
@@ -133,12 +135,14 @@ class Tank {
      * Shoot the bullet
      *
      * @method shoot
+     * @param {String} direction Set the bullet direction
      * @public
      * @return {Undefined}
      */
-    shoot() {
+    shoot(direction) {
         this.bullet.setPos(this.xoffset + 25, this.yoffset + 5);
-        this.bullet.shoot(BULLET_DIR_RIGHT, this.angle, tank2);
+        this.bullet.shoot(direction, this.angle, this.target);
+        console.log(this.angle);
     }
 
     /**
@@ -182,5 +186,17 @@ class Tank {
         if (this.xoffset > GAME_WIDTH - this.width - 1){
             this.xoffset = GAME_WIDTH - this.width - 1;
         }
+    }
+
+    /**
+     * Set the target tank that this tank wants to hit with the bullet
+     *
+     * @method setTarget
+     * @public
+     * @param {Tank} target The target tank
+     * @return {Undefined}
+     */
+    setTarget(target){
+        this.target = target;
     }
 }

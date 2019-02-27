@@ -40,13 +40,14 @@ class Bullet {
      * @return {Undefined}
      */
     move() {
-        this.yPos += this.angle;
         switch (this.dir) {
             case BULLET_DIR_LEFT:
                 this.xPos -= 1;
+                this.yPos -= this.angle;
                 break;
             case BULLET_DIR_RIGHT:
                 this.xPos += 1;
+                this.yPos += this.angle;
                 break;
             default:
                 break;

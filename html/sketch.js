@@ -16,6 +16,8 @@ function preload() {
     // Json files contains the tank shape etc
     tank1Json = loadJSON("tankdata/tank1.json");
     tank2Json = loadJSON("tankdata/tank2.json");
+
+    // Load the game map data
     levelJson = loadJSON("tankdata/level_main.json");
     backgroundJson = loadJSON("tankdata/level_background.json");
 }
@@ -30,10 +32,10 @@ function setup() {
     tank2 = new Tank(tank2Json)
     tank2.setoffset(800, GAME_HEIGHT / 2 - tank2.height);
 
+    // tank1 targets the tank2 and vice versa
+    tank1.setTarget(tank2);
+    tank2.setTarget(tank1);
 
-    //tank1 = new Tank();
-    // gameMap.draw();
-    // tank1.draw();
 }
 
 function draw() {
@@ -47,6 +49,8 @@ function draw() {
         tank2.moveLeft();
     } else if (keyIsDown(RIGHT_ARROW)) {
         tank2.moveRight();
+    } else if (keyIsDown(ENTER)) {
+        tank2.shoot(BULLET_DIR_LEFT);
     }
 
     // KeyCode 97 is 'a'
@@ -55,10 +59,9 @@ function draw() {
         // KeyCode 100 is 'd'
     } else if (keyCode === 100) {
         tank1.moveRight();
-    } else if (keyIsDown(ENTER)) {
-        tank1.shoot();
+    } else if (keyIsDown(SHIFT)) {
+        tank1.shoot(BULLET_DIR_RIGHT);
     }
-
     tank1.draw();
     tank2.draw();
 }
