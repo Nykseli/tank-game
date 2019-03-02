@@ -86,9 +86,14 @@ class Bullet {
      */
     hitGround() {
         for (let mapP of levelJson['pixels']){
-            if (this.xPos === mapP[0] && Math.floor(this.yPos) === mapP[1]){
-                this.isAlive = false;
-                break;
+            // For each pixel in map, check if any of the bullet pixels has touch the ground
+            for (let i = 0; i < this.size; i++) {
+                for (let j = 0; j < this.size; j++) {
+                    if (this.xPos + i === mapP[0] && Math.floor(this.yPos) + j === mapP[1]){
+                        this.isAlive = false;
+                        return;
+                    }
+                }
             }
         }
     }
@@ -102,11 +107,16 @@ class Bullet {
      * @return {Undefined}
      */
     hitTarget() {
-        for (let mapP of this.target.pixels) {
-            if (this.xPos === mapP[0] && Math.floor(this.yPos) === mapP[1]){
-                this.target.takeDamage();
-                this.isAlive = false;
-                break;
+        for (let tarP of this.target.pixels) {
+            // For each pixel in target tank, check if any of the bullet pixels has hit it
+            for (let i = 0; i < this.size; i++) {
+                for (let j = 0; j < this.size; j++) {
+                    if (this.xPos + i === tarP[0] && Math.floor(this.yPos) + j === tarP[1]){
+                        this.target.takeDamage();
+                        this.isAlive = false;
+                        return;
+                    }
+                }
             }
         }
     }
